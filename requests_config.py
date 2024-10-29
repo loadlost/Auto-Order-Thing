@@ -7,6 +7,10 @@
 # - headers: Заголовки запроса.
 # - before_request_method: Метод, который выполняется перед отправкой запроса для подготовки данных.
 # - after_request_method: Метод, который выполняется после получения ответа для обработки данных.
+# - data: Данные для POST-запросов.
+# - allow_redirects: Флаг, определяющий, разрешены ли автоматические редиректы.
+# - use_proxies: Флаг, определяющий, нужно ли использовать прокси для запроса.
+# - solver: Объект GOSSolver, используемый для выполнения запросов.
 
 
 from credentials import login_pass_gosuslugi
@@ -183,20 +187,6 @@ banners_response = RequestConfig(
     use_proxies=False
 )
 
-pixel_response = RequestConfig(
-    method='GET',
-    headers={
-        'Host': 'cbn.gosuslugi.ru',
-        'Referer': 'https://esia.gosuslugi.ru/login',
-        'Sec-Fetch-Dest': 'image',
-        'Sec-Fetch-Mode': 'no-cors',
-        'Sec-Fetch-Site': 'cross-site',
-        'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
-    },
-    before_request_method='set_pixel_url',
-    after_request_method='cookies_rename'
-)
-
 login_POST_response = RequestConfig(
     url='https://esia.gosuslugi.ru/aas/oauth2/api/login',
     method='POST',
@@ -340,4 +330,48 @@ response_finish = RequestConfig(
         'Sec-Fetch-Site': 'same-origin'
     },
     before_request_method='set_response_finish_data'
+)
+page_response = RequestConfig(
+    url="https://lk.rosreestr.ru/account-back/applications?page=0&size=10",
+    method='POST',
+    headers={
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Host': 'lk.rosreestr.ru',
+        'Origin': 'https://lk.rosreestr.ru',
+        'Referer': 'https://lk.rosreestr.ru/request-access-egrn/property-search',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin'
+    },
+    before_request_method='set_page_response_data',
+    after_request_method='get_link_to_download'
+)
+
+download_response = RequestConfig(
+    method='GET',
+    headers={
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Host': 'lk.rosreestr.ru',
+        'Origin': 'https://lk.rosreestr.ru',
+        'Referer': 'https://lk.rosreestr.ru/request-access-egrn/property-search',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin'
+    },
+    before_request_method='set_download_response_url'
+)
+
+count_response = RequestConfig(
+    url='https://lk.rosreestr.ru/account-back/notifications/unread/count',
+    method='GET',
+    headers={
+        'Accept': 'application/json, text/plain, */*',
+        'Host': 'lk.rosreestr.ru',
+        'Referer': 'https://lk.rosreestr.ru/success',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin'
+    }
 )

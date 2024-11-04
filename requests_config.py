@@ -224,15 +224,11 @@ response_profile_info = RequestConfig(
     before_request_method='set_oid_url'
 )
 
-cad_number = ''
+
 applications_information_response = RequestConfig(
     url='https://lk.rosreestr.ru/account-back/access-key/cancellation/status/information',
     method='GET',
-    headers=common_headers.common_headers_applications_information_track,
-    data={
-        "filterType": "cadastral",
-        "cadNumbers": [cad_number]
-    }
+    headers=common_headers.common_headers_applications_information_track
 )
 
 track_response = RequestConfig(

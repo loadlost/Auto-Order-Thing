@@ -258,7 +258,7 @@ def download_file(session: CustomSession, cad_list: List[str], task_name: str) -
     logging.info("Download process completed.")
 
 
-from typing import List
+
 
 
 def send_requests(session: CustomSession, request_list: List[RequestConfig], max_url_length: int = 100,
